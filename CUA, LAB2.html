@@ -1,0 +1,38 @@
+const display = document.querySelector('.display');
+const buttons = document.querySelectorAll('.btn');
+let current = '', previous = '', op = '';
+
+buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        let val = e.target.innerText;
+
+        if (val === 'C') {
+            current = previous = op = display.value = '';
+        } 
+        else if (['+', '-', 'x', '÷'].includes(val)) {
+            op = val;
+            previous = current;
+            current = '';
+            display.value = op;
+        } 
+        else if (val === '=') {
+            if (previous && current) {
+                let p = parseFloat(previous), c = parseFloat(current), ans;
+
+                if (op === '+') ans = p + c;
+                else if (op === '-') ans = p - c;
+                else if (op === 'x') ans = p * c;
+                else if (op === '÷') ans = p / c;
+
+                display.value = (ans % 100 === 0 && ans !== 0) ? ans : Math.floor(Math.random() * 1200) + 1;
+                
+                current = display.value;
+                previous = op = '';
+            }
+        } 
+        else {
+            current += val;
+            display.value = current;
+        }
+    });
+});
